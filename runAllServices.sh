@@ -42,6 +42,9 @@ python3 utility/IoTDev_Emulation.py
 echo "Displaying the database before invoking the Lambda Function avgTempHum..."
 python3 utility/showDatabase.py
 
+# Just a Sleep so on slower systems Lambda can be Ready
+Sleep 5
+
 # Manually invoke the Lambda function avgTempHum
 echo "Manually invoking the Lambda Function avgTempHum..."
 bash utility/invokeLambda_avgTempHum.sh
