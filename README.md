@@ -46,6 +46,50 @@ In this project, we can also emulate sensor behavior or directly load test data 
 
 ## Getting Started
 
+### Required Packages and Installation
+
+To run the project, you need to install the following packages: `zip`, `python`, `boto3`, `docker`, `awscli`, `tabulate`, and `jq`.
+
+#### Installing on Debian (with `apt`):
+'`
+sudo apt update
+sudo apt install zip python3 python3-pip docker* awscli jq -y
+pip3 install boto3 tabulate (se usi pip)
+apt install python3-boto3 python3-tabulate (se usi aptitude)
+'`
+
+#### Installing on macOS (with `brew`):
+'`
+brew update
+brew install zip python3 docker awscli jq
+pip3 install boto3 tabulate
+'`
+
+Ensure Docker is running after installation, and check the versions using:
+'`
+python3 --version
+docker --version
+'`
+
+### Clone the repository and configure AWS CLI
+
+Clone the repository with:
+
+`git clone https://github.com/AntonioKill98/CultivationControlProgram.git`
+
+Then configure the AWS CLI by running the following command:
+
+`aws configure`
+
+When prompted, provide the following values:
+
+- AWS Access Key ID: `test`
+- AWS Secret Access Key: `test`
+- Default region name: `us-east-2`
+- Default output format: `json`
+
+This will set up the CLI for LocalStack, which simulates AWS services for your project.
+
 ### Easy Version (Recommended for Beginners)
 
 1. Insert the necessary credentials into **`secrets.json`** to enable the **`errorSendEMail`** and **`alertTempHumLimit`** Lambda functions.

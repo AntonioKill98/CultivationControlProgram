@@ -1,13 +1,20 @@
 import boto3
 import datetime
 import json
+import platform
 
-# Handler of the Lamda Function
+# Determine the appropriate endpoint based on the OS
+if platform.system() == 'Darwin':  # macOS
+    localstack_endpoint = 'http://host.docker.internal:4566'
+else:  # Linux, Windows, etc.
+    localstack_endpoint = 'http://localhost:4566'
+
+# Handler of the Lambda Function
 def lambda_handler(event, context):
     try:
         print("Lambda function invoked successfully")
-        sqs = boto3.resource('sqs', endpoint_url='http://host.docker.internal:4566')
-        dynamodb = boto3.resource('dynamodb', endpoint_url="http://host.docker.internal:4566")
+        sqs = boto3.resource('sqs', endpoint_url=localstack_endpoint)
+        dynamodb = boto3.resource('dynamodb', endpoint_url=localstack_endpoint)
         table = dynamodb.Table('Campi')
 
         fields = ['Rucola', 'Insalata', 'Basilico', 'Radicchio']

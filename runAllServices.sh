@@ -28,7 +28,7 @@ bash utility/createLambda_avgTempHum.sh
 
 # Create the Lambda function errorSendEMail
 echo "Creating Lambda Function errorSendEMail..."
-bash utility/createLambda_errorSendEMail.sh
+bash utility/createLambda_errorSendEmail.sh
 
 # Create the Lambda function alertTempHumLimit
 echo "Creating Lambda Function alertTempHumLimit..."
