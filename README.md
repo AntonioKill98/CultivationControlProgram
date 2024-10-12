@@ -32,15 +32,15 @@ An application listens to these MQTT topics and inserts the collected data into 
 
 Here, the first Lambda function, **`avgTempHum`**, is triggered every 5 minutes. It calculates the average temperature and humidity for each cultivation based on the values in the queue, then stores the results in a DynamoDB database. We can view the contents of the database table using the Python program `showDatabase.py`. However, no other graphical interfaces are currently implemented.
 
-![Architecture of the Project](./images/Database.png)
+![Architecture of the Project](./images/Database.jpg)
 
 Another Lambda function, **`errorSendEMail`**, monitors the **`Error`** queue and, upon receiving data, sends an email alert. This function retrieves Gmail account credentials and recipient addresses from a **`secrets.json`** file.
 
-![Architecture of the Project](./images/EMailAlert.png)
+<img src="./images/EMailAlert.jpg" alt="Error Alert by EMail" width="400"/>
 
 Lastly, the **`alertTempHumLimit`** Lambda function is triggered whenever the database is updated. It checks whether the new average temperature and humidity values exceed predefined thresholds. If they do, an urgent notification is sent via Telegram using a bot. The bot token and chat ID are specified in **`secrets.json`**.
 
-![Architecture of the Project](./images/TelegramNotification.jpg)
+<img src="./images/TelegramNotification.jpg" alt="Telegram Notification" width="400"/>
 
 In this project, we can also emulate sensor behavior or directly load test data into the database to better test the Lambda functions, all through the scripts available in the **`utility`** folder of the project.
 
