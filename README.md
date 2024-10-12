@@ -24,15 +24,23 @@ This project was developed for the **Serverless Computing** exam at the **Univer
 
 ## Architecture
 
+![Architecture of the Project](./images/ProjectScheme.png)
+
 We are in a field with four different greenhouse cultivations, each requiring specific humidity and temperature conditions. Three sensors are installed in each greenhouse to measure temperature and humidity every minute. These sensors communicate with an MQTT Broker, publishing to topics named **`"CultivationName_Temperature"`** and **`"CultivationName_Humidity"`**, sending messages with their ID and the recorded measurement. If an error occurs, the sensors send **`"ERR"`** in place of the value.
 
 An application listens to these MQTT topics and inserts the collected data into specific SQS queues, formatting each entry as **`Device ID, Temperature, Humidity, Measure Date`**.
 
-Here, the first Lambda function, **`avgTempHum`**, is triggered every 5 minutes. It calculates the average temperature and humidity for each cultivation based on the values in the queue, then stores the results in a DynamoDB database.
+Here, the first Lambda function, **`avgTempHum`**, is triggered every 5 minutes. It calculates the average temperature and humidity for each cultivation based on the values in the queue, then stores the results in a DynamoDB database. We can view the contents of the database table using the Python program `showDatabase.py`. However, no other graphical interfaces are currently implemented.
+
+![Architecture of the Project](./images/Database.png)
 
 Another Lambda function, **`errorSendEMail`**, monitors the **`Error`** queue and, upon receiving data, sends an email alert. This function retrieves Gmail account credentials and recipient addresses from a **`secrets.json`** file.
 
+![Architecture of the Project](./images/EMailAlert.png)
+
 Lastly, the **`alertTempHumLimit`** Lambda function is triggered whenever the database is updated. It checks whether the new average temperature and humidity values exceed predefined thresholds. If they do, an urgent notification is sent via Telegram using a bot. The bot token and chat ID are specified in **`secrets.json`**.
+
+![Architecture of the Project](./images/TelegramNotification.jpg)
 
 In this project, we can also emulate sensor behavior or directly load test data into the database to better test the Lambda functions, all through the scripts available in the **`utility`** folder of the project.
 
@@ -134,3 +142,4 @@ To use this system:
 - Improve the communication between Arduino and the system by generalizing both the Arduino sketch and the communication manager, making it suitable for all sensors or even eliminating the need for the communication manager altogether.
 - Add more comments to the code and create helpful prompts when commands requiring arguments are invoked without them.
 - Add useful parameters inside the greenhouse, such as a tank fill sensor, an additional soil moisture sensor, and implement a method to control sprinklers.
+- Add a graphical user interface (GUI) to better visualize data, which will be essential as more parameters are introduced for management.
