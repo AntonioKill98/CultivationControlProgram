@@ -4,10 +4,12 @@ import json
 import platform
 
 # Determine the appropriate endpoint based on the OS
-if platform.system() == 'Darwin':  # macOS
-    localstack_endpoint = 'http://host.docker.internal:4566'
-else:  # Linux, Windows, etc.
-    localstack_endpoint = 'http://localhost:4566'
+#if platform.system() == 'Darwin':  # macOS
+#    localstack_endpoint = 'http://host.docker.internal:4566'
+#else:  # Linux, Windows, etc.
+#    localstack_endpoint = 'http://localhost:4566'
+
+localstack_endpoint = 'http://172.17.0.1:4566'
 
 # Handler of the Lambda Function
 def lambda_handler(event, context):
