@@ -19,7 +19,7 @@ fi
 # Create a CloudWatch rule to trigger the Lambda every 60 minutes
 echo "Creating a CloudWatch rule eventAvgCalculation..."
 EVENT_ARN=$(aws events put-rule --name eventAvgCalculation \
-  --schedule-expression 'rate(60 minutes)' \
+  --schedule-expression 'rate(15 minutes)' \
   --query 'RuleArn' \
   --output text \
   --endpoint-url=http://localhost:4566)
