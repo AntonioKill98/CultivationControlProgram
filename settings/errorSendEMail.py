@@ -15,7 +15,7 @@ def send_email(device_id, error_date, secrets):
     to_email = secrets['email_alert']['recipient_email']
 
     # Email details
-    subject = "[Serre Program] Device Error Notification"
+    subject = "[Cultivation Control Program] Device Error Notification"
     body = f"A device encountered an error.\nDevice ID: {device_id}\nError Date: {error_date}"
 
     # Set up the email server (Gmail)
