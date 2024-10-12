@@ -17,8 +17,7 @@ This project was developed for the **Serverless Computing** exam at the **Univer
 ## What do you need to run this Project
 
 - **Python** (mine is the 3.10 so i can suggest this version);
-- **Docker**;
-- **LocalStack** (for local AWS emulation in a Docker Container);
+- **Docker** (where we are gonna create a Container with LocalStack);
 - **Arduino** and **Arduino IDE**(If you want to use a real Sensors);
 - **AWS CLI** (So we can control what is happening in the Container);
 - **boto3** (Python Library for interact with the System);
@@ -116,3 +115,22 @@ In this project, we can also emulate sensor behavior or directly load test data 
    Test this by running:
    `python3 ./utility/test_alertTempHumLimit.py`
    which inserts faulty data into the **Insalata** cultivation record to trigger the Lambda function.
+
+### Usage of a Real Arduino
+
+I have created an Arduino script specifically for the **Arduino UNO WiFi Rev4** (important note: older Arduino UNO WiFi boards used the WiFiNINA library, but this is no longer used). The script includes a `secrets.h` file where you can input your WiFi network name, password, and the address of your MQTT broker. The temperature sensor used is a **DHT22**, connected to pin 2 of the Arduino.
+
+Currently, both the Arduino and the Python communication script are programmed solely for the **Rucola** field. The Python script simulates having three sensors (**Rucola_0**, **Rucola_1**, and **Rucola_2**) by triplicating the received information.
+
+To use this system:
+1. Start the MQTT broker in a new terminal with:
+   `./utility/mosquittoStart.sh`
+   
+2. In another terminal, run the communication manager Python program:
+   `python3 utility/listenToRucola.py`
+
+## Future Updates
+
+- Improve the communication between Arduino and the system by generalizing both the Arduino sketch and the communication manager, making it suitable for all sensors or even eliminating the need for the communication manager altogether.
+- Add more comments to the code and create helpful prompts when commands requiring arguments are invoked without them.
+- Add useful parameters inside the greenhouse, such as a tank fill sensor, an additional soil moisture sensor, and implement a method to control sprinklers.
