@@ -1,38 +1,35 @@
-import subprocess
+import boto3
 import json
 from tabulate import tabulate
 
 def scan_dynamodb_table():
-    # Execute AWS command to retrieve data from the "Campi" table
-    command = ['aws', 'dynamodb', 'scan', '--table-name', 'Campi', '--endpoint-url', 'http://localhost:4566']
-    result = subprocess.run(command, capture_output=True, text=True)
+    # Crea un client DynamoDB puntando a LocalStack
+    dynamodb = boto3.client('dynamodb', endpoint_url='http://localhost:4566')
 
-    if result.returncode != 0:
-        print("Error executing AWS command:", result.stderr)
-        return
+    # Scansiona la tabella DynamoDB "Campi"
+    response = dynamodb.scan(TableName='Campi')
 
-    data = json.loads(result.stdout)
-    items = data.get('Items', [])
+    items = response.get('Items', [])
     table_data = []
     headers = set()
 
-    # Collect the keys (columns) and format the rows
+    # Colleziona le chiavi (le colonne) e formatta le righe
     for item in items:
         row = {}
         for key, value in item.items():
             headers.add(key)
-            # Extract the actual value from the DynamoDB dictionary
+            # Estrai il valore effettivo dal dizionario DynamoDB
             value_type, value_content = next(iter(value.items()))
             row[key] = value_content
         table_data.append(row)
 
-    # Force the order of headers with 'humidity' as the last field
+    # Forza l'ordine delle intestazioni con 'humidity' come ultimo campo
     headers = ['cultivationName', 'device_ids', 'measure_date', 'temperature', 'humidity']
-    
-    # Create a list of rows with ordered values
+
+    # Crea una lista di righe con i valori ordinati
     table_rows = [[row.get(h, '') for h in headers] for row in table_data]
 
-    # Print the table with the customized header order
+    # Stampa la tabella con le intestazioni ordinate
     print(tabulate(table_rows, headers=headers, tablefmt="pretty"))
 
 if __name__ == "__main__":
