@@ -43,7 +43,8 @@ echo "Displaying the database before invoking the Lambda Function avgTempHum..."
 python3 utility/showDatabase.py
 
 # Just a Sleep so on slower systems Lambda can be Ready
-Sleep 5
+echo "Now a little 7 seconds sleep so the system can be ready..."
+sleep 7
 
 # Manually invoke the Lambda function avgTempHum
 echo "Manually invoking the Lambda Function avgTempHum..."
