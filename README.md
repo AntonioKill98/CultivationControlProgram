@@ -51,6 +51,7 @@ In this project, we can also emulate sensor behavior or directly load test data 
 To run the project, you need to install the following packages: `zip`, `python`, `boto3`, `docker`, `awscli`, `tabulate`, and `jq`.
 
 #### Installing on Debian (with `apt`):
+
 ```
 sudo apt update
 sudo apt install zip python3 python3-pip docker* awscli jq -y
@@ -59,28 +60,33 @@ apt install python3-boto3 python3-tabulate (if you want to use aptitude)
 ```
 
 #### Installing on macOS (with `brew`):
-'`
+
+```
 brew update
 brew install zip python3 docker awscli jq
 pip3 install boto3 tabulate
-'`
+```
 
 Ensure Docker is running after installation, and check the versions using:
-'`
+
+```
 python3 --version
 docker --version
-'`
+```
 
 ### Clone the repository and configure AWS CLI
 
 Clone the repository with:
 
-`git clone https://github.com/AntonioKill98/CultivationControlProgram.git`
+```
+git clone https://github.com/AntonioKill98/CultivationControlProgram.git
+```
 
 Then configure the AWS CLI by running the following command:
 
-`aws configure`
-
+```
+aws configure
+```
 When prompted, provide the following values:
 
 - AWS Access Key ID: `test`
@@ -95,77 +101,167 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
 1. Insert the necessary credentials into **`secrets.json`** to enable the **`errorSendEMail`** and **`alertTempHumLimit`** Lambda functions.
 
 2. Start the LocalStack Docker container by running:
-   `./utility/startLocalStack.sh`
+
+   ```
+   ./utility/startLocalStack.sh
+   ```
+
    in one terminal.
 
-3. In a new terminal, run:
-   `./runAllServices.sh`
+4. In a new terminal, run:
+
+   ```
+   ./runAllServices.sh
+   ```
+   
    This will activate, configure, and test all project components.
 
 ### Intermediate Version
 
 1. Start the LocalStack Docker container with the command:
-   `./utility/startLocalStack.sh`
-   This command runs the following Docker command:
-   `docker run --rm -it -p 4566:4566 -p 4571:4571 -v /var/run/docker.sock:/var/run/docker.sock localstack/localstack`
 
-2. Create the DynamoDB table by running:
-   `python3 settings/createTable.py`
+   ```
+   ./utility/startLocalStack.sh
+   ```
+
+   This command runs the following Docker command:
+
+   ```
+   docker run --rm -it -p 4566:4566 -p 4571:4571 -v /var/run/docker.sock:/var/run/docker.sock localstack/localstack
+   ```
+
+3. Create the DynamoDB table by running:
+   
+   ```
+   python3 settings/createTable.py
+   ```
+
    This script uses Boto3 to create a table with DynamoDB streams enabled, which will be used later.
 
-3. Load initial data into the database by running:
-   `python3 settings/loadData.py`
+4. Load initial data into the database by running:
+
+   ```
+   python3 settings/loadData.py
+   ```
+   
    This populates the database with random data entries.
 
-4. Create the necessary SQS queues by running:
-   `./utility/createQueques.sh`
+5. Create the necessary SQS queues by running:
+   
+   ```
+   ./utility/createQueques.sh
+   ```
+   
    This script runs:
-   `aws sqs create-queue --queue-name nameOfQueue --endpoint-url=http://localhost:4566`
+   
+   ```
+   aws sqs create-queue --queue-name nameOfQueue --endpoint-url=http://localhost:4566
+   ```
+   
    for each queue required.
 
-5. Create the Lambda Role and assign a policy by running:
-   `./utility/createLambdaRole.sh`
-   This script creates a role using:
-   `aws iam create-role ...`
-   and assigns a policy using:
-   `aws iam put-role-policy ...`
+6. Create the Lambda Role and assign a policy by running:
+   
+   ```
+   ./utility/createLambdaRole.sh
+   ```
 
-6. Create the first Lambda function, **avgTempHum**, by running:
-   `./utility/createLambda_avgTempHum.sh`
+   This script creates a role using:
+   ```
+   aws iam create-role ...
+   ```
+   and assigns a policy using:
+   ```   
+   aws iam put-role-policy ...
+   ```
+
+7. Create the first Lambda function, **avgTempHum**, by running:
+   
+   ```
+   ./utility/createLambda_avgTempHum.sh
+   ```
+   
    This script creates a ZIP file containing the **settings/avgTempHum.py** script and registers the Lambda function using:
-   `aws lambda create-function ...`
+
+   ```
+   aws lambda create-function ...
+   ```
    while associating the Lambda Role created earlier.
 
-7. Test the first Lambda function manually:
+9. Test the first Lambda function manually:
    - Fill the queues with sensor data by running:
-     `python3 utility/IoTDev_Emulation.py`
+   
+     ```  
+     python3 utility/IoTDev_Emulation.py
+     ```
+   
    - Check the queue contents with:
-     `./utility/printQueue.sh nameOfQueue`
+   
+     ```  
+     ./utility/printQueue.sh nameOfQueue
+     ```
+   
    - View the database contents before invocation:
-     `python3 utility/showDatabase.py`
-   - Manually invoke the Lambda function:
-     `./utility/invokeLambda_avgTempHum.sh`
-   - View the database again after invocation:
-     `python3 utility/showDatabase.py`
-   - Finally, set up a scheduled event to trigger the Lambda function every 15 minutes using:
-     `./utility/createEvent_avgCalculation.sh`
-     This creates a CloudWatch rule using:
-     `aws events put-role ...`
-     and associates the event with the Lambda function using:
-     `aws lambda add-permission ...`
+   
+     ```
+     python3 utility/showDatabase.py
+     ```
 
-8. Initialize the second Lambda function, **errorSendEMail**, by running:
-   `./utility/createLambda_errorSendEMail.sh`
+   - Manually invoke the Lambda function:
+   
+     ```
+     ./utility/invokeLambda_avgTempHum.sh
+     ```
+
+   - View the database again after invocation:
+
+     ```
+     python3 utility/showDatabase.py
+     ```
+
+   - Finally, set up a scheduled event to trigger the Lambda function every 15 minutes using:
+
+     ```
+     ./utility/createEvent_avgCalculation.sh
+     ```
+     
+     This creates a CloudWatch rule using:
+     ```
+     aws events put-role ...
+     ```
+     and associates the event with the Lambda function using:
+     ```
+     aws lambda add-permission ...
+     ```
+
+10. Initialize the second Lambda function, **errorSendEMail**, by running:
+   
+   ```
+   ./utility/createLambda_errorSendEMail.sh`
+   ```
+
    This script creates a ZIP file containing **settings/errorSendEMail.py** and **secrets.json**, creates the Lambda function with the previously created Lambda Role, and sets up event source mapping for the **Error** queue. 
    Test it using:
-   `./utility/test_errorSendEMail.sh`
+
+   ```
+   ./utility/test_errorSendEMail.sh
+   ```
+
    which publishes a message to the **Error** queue simulating a sensor failure.
 
-9. Lastly, initialize the **alertTempHumLimit** Lambda function using:
-   `./utility/createLambda_alertTempHumLimit.sh`
+11. Lastly, initialize the **alertTempHumLimit** Lambda function using:
+   
+   ```
+   ./utility/createLambda_alertTempHumLimit.sh
+   ```
+
    This script creates the necessary ZIP file containing **settings/alertTempHumLimit.py**, adds **secrets.json**, and includes the **requests** library (required for the Telegram bot) from **settings/alertTempHumLimit_package**. After creating the Lambda function, the script sets up event source mapping between DynamoDB updates (enabled by the stream) and the Lambda function. 
    Test this by running:
-   `python3 ./utility/test_alertTempHumLimit.py`
+
+   ```
+   python3 ./utility/test_alertTempHumLimit.py
+   ```
+
    which inserts faulty data into the **Insalata** cultivation record to trigger the Lambda function.
 
 ### Usage of a Real Arduino
@@ -176,10 +272,16 @@ Currently, both the Arduino and the Python communication script are programmed s
 
 To use this system:
 1. Start the MQTT broker in a new terminal with:
-   `./utility/mosquittoStart.sh`
-   
+
+   ```
+   ./utility/mosquittoStart.sh`
+   ```
+
 2. In another terminal, run the communication manager Python program:
-   `python3 utility/listenToRucola.py`
+
+   ```
+   python3 utility/listenToRucola.py
+   ```
 
 ## Future Updates
 
