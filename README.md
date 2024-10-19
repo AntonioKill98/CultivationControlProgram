@@ -130,7 +130,7 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
    docker run --rm -it -p 4566:4566 -p 4571:4571 -v /var/run/docker.sock:/var/run/docker.sock localstack/localstack
    ```
 
-3. Create the DynamoDB table by running:
+2. Create the DynamoDB table by running:
    
    ```
    python3 settings/createTable.py
@@ -138,7 +138,7 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
 
    This script uses Boto3 to create a table with DynamoDB streams enabled, which will be used later.
 
-4. Load initial data into the database by running:
+3. Load initial data into the database by running:
 
    ```
    python3 settings/loadData.py
@@ -146,7 +146,7 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
    
    This populates the database with random data entries.
 
-5. Create the necessary SQS queues by running:
+4. Create the necessary SQS queues by running:
    
    ```
    ./utility/createQueques.sh
@@ -160,7 +160,7 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
    
    for each queue required.
 
-6. Create the Lambda Role and assign a policy by running:
+5. Create the Lambda Role and assign a policy by running:
    
    ```
    ./utility/createLambdaRole.sh
@@ -175,7 +175,7 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
    aws iam put-role-policy ...
    ```
 
-7. Create the first Lambda function, **avgTempHum**, by running:
+6. Create the first Lambda function, **avgTempHum**, by running:
    
    ```
    ./utility/createLambda_avgTempHum.sh
@@ -188,7 +188,7 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
    ```
    while associating the Lambda Role created earlier.
 
-9. Test the first Lambda function manually:
+7. Test the first Lambda function manually:
    - Fill the queues with sensor data by running:
    
      ```  
@@ -234,7 +234,7 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
      aws lambda add-permission ...
      ```
 
-10. Initialize the second Lambda function, **errorSendEMail**, by running:
+8. Initialize the second Lambda function, **errorSendEMail**, by running:
    
    ```
    ./utility/createLambda_errorSendEMail.sh`
@@ -249,7 +249,7 @@ This will set up the CLI for LocalStack, which simulates AWS services for your p
 
    which publishes a message to the **Error** queue simulating a sensor failure.
 
-11. Lastly, initialize the **alertTempHumLimit** Lambda function using:
+9. Lastly, initialize the **alertTempHumLimit** Lambda function using:
    
    ```
    ./utility/createLambda_alertTempHumLimit.sh
