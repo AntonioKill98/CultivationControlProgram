@@ -51,12 +51,12 @@ In this project, we can also emulate sensor behavior or directly load test data 
 To run the project, you need to install the following packages: `zip`, `python`, `boto3`, `docker`, `awscli`, `tabulate`, and `jq`.
 
 #### Installing on Debian (with `apt`):
-'`
+```
 sudo apt update
 sudo apt install zip python3 python3-pip docker* awscli jq -y
-pip3 install boto3 tabulate (se usi pip)
-apt install python3-boto3 python3-tabulate (se usi aptitude)
-'`
+pip3 install boto3 tabulate (if you want to use pip)
+apt install python3-boto3 python3-tabulate (if you want to use aptitude)
+```
 
 #### Installing on macOS (with `brew`):
 '`
