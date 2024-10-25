@@ -30,7 +30,8 @@ We are in a field with four different greenhouse cultivations, each requiring sp
 
 An application listens to these MQTT topics and inserts the collected data into specific SQS queues, formatting each entry as **`Device ID, Temperature, Humidity, Measure Date`**.
 
-Here, the first Lambda function, **`avgTempHum`**, is triggered every 5 minutes. It calculates the average temperature and humidity for each cultivation based on the values in the queue, then stores the results in a DynamoDB database. We can view the contents of the database table using the Python program `showDatabase.py`. However, no other graphical interfaces are currently implemented.
+Here, the first Lambda function, **`avgTempHum`**, is triggered every 5 minutes. It calculates the average temperature and humidity for each cultivation based on the values in the queue, then stores the results in a DynamoDB database. We can view the contents of the database table using the Python program `showDatabase.py` but i also developed a small GUI in Java to demonstrate the integration of the AWS SDK with Java, as the main project is entirely in Python. The GUI is available in this additional project and functions as a dynamic database viewer. It is fully configurable, so it can be used to load other tables as well if desired.
+Link to the GUI project: [Cultivation Control Program - GUI](https://github.com/AntonioKill98/cultivationControlProgram_GUI)
 
 ![Architecture of the Project](./images/Database.png)
 
