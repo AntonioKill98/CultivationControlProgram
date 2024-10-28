@@ -289,7 +289,7 @@ To use this system:
 
 ## Future Updates
 
-	•	Enhance Communication Between Arduino and System: Generalize both the Arduino sketch and the communication manager, making it adaptable to any sensor or potentially eliminating the need for a dedicated communication manager altogether. Additionally, implement LoRa technology as the data transfer system between the Arduinos and a central data collection station.
-	•	Collect External Temperature Data for Predictive Modeling: Gather external temperature data outside the greenhouses to enable comparisons and build a predictive model that estimates internal temperatures based on external conditions.
-	•	Improve Code Readability and Usability: Add more comments throughout the code to improve readability and implement helpful prompts for commands that require arguments, enhancing the user experience.
-	•	Expand Environmental Monitoring and Control Capabilities: Introduce additional parameters within the greenhouse, such as a tank fill sensor and an extra soil moisture sensor. Implement methods for automated control of sprinklers and ventilation units to enhance environmental management.
+- Enhance Communication Between Arduino and System: Generalize both the Arduino sketch and the communication manager, making it adaptable to any sensor or potentially eliminating the need for a dedicated communication manager altogether. Additionally, implement LoRa technology as the data transfer system between the Arduinos and a central data collection station.
+- Collect External Temperature Data for Predictive Modeling: Gather external temperature data outside the greenhouses to enable comparisons and build a predictive model that estimates internal temperatures based on external conditions.
+- Improve Code Readability and Usability: Add more comments throughout the code to improve readability and implement helpful prompts for commands that require arguments, enhancing the user experience.
+- Expand Environmental Monitoring and Control Capabilities: Introduce additional parameters within the greenhouse, such as a tank fill sensor and an extra soil moisture sensor. Implement methods for automated control of sprinklers and ventilation units to enhance environmental management.
