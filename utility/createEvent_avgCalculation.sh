@@ -16,10 +16,10 @@ if [ -z "$LAMBDA_ARN" ]; then
   exit 1
 fi
 
-# Create a CloudWatch rule to trigger the Lambda every 60 minutes
+# Create a CloudWatch rule to trigger the Lambda every 5 minutes
 echo "Creating a CloudWatch rule eventAvgCalculation..."
 EVENT_ARN=$(aws events put-rule --name eventAvgCalculation \
-  --schedule-expression 'rate(15 minutes)' \
+  --schedule-expression 'rate(5 minutes)' \
   --query 'RuleArn' \
   --output text \
   --endpoint-url=http://localhost:4566)
